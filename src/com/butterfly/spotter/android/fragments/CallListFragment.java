@@ -3,11 +3,13 @@ package com.butterfly.spotter.android.fragments;
 import java.util.ArrayList;
 
 import com.butterfly.spotter.android.R;
+import com.butterfly.spotter.android.listener.SwitchFragmentListener;
 
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,13 +27,13 @@ public class CallListFragment extends ListFragment implements FragmentHandler {
     public static String currentPeer;
 	private ArrayList<String> itemsArray = new ArrayList<String>();
     private ArrayAdapter<String> adapter;
-    private OnCallListItemSelectedLisener listItemLisener;
+    private SwitchFragmentListener fragmentListener;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        
+        Log.d("createing..." , "new cretaed");
         itemsArray.add("0191734346");
         itemsArray.add("0191731111");
         itemsArray.add("0191733454");
@@ -68,7 +70,7 @@ public class CallListFragment extends ListFragment implements FragmentHandler {
         Toast.LENGTH_SHORT);
         t.show();
         currentPeer = adapter.getItem(position);
-        listItemLisener.reLoadSelectedTabView();
+        fragmentListener.switchFragment(ChatFragment.class);
 
     }
 
@@ -78,10 +80,10 @@ public class CallListFragment extends ListFragment implements FragmentHandler {
         super.onAttach(activity);
         
         try {
-            listItemLisener = (OnCallListItemSelectedLisener) activity;
+            fragmentListener = (SwitchFragmentListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnCallListItemSelectedLisener");
+                    + " must implement SwitchFragmentListener");
         }
     }
 
@@ -95,10 +97,6 @@ public class CallListFragment extends ListFragment implements FragmentHandler {
     public void onResume()
     {
         super.onResume();
-    }
-    
-    public interface OnCallListItemSelectedLisener {
-        public void reLoadSelectedTabView();
     }
     
 	public String fragmentName() {

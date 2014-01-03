@@ -25,21 +25,21 @@ public final class R {
     }
     public static final class id {
         public static final int action_settings=0x7f090010;
+        public static final int activity_container=0x7f090006;
         public static final int button1=0x7f090002;
         public static final int callerId=0x7f090005;
-        public static final int chatButton=0x7f09000c;
-        public static final int chatEditText=0x7f09000d;
-        public static final int chatText=0x7f09000e;
-        public static final int chat_fragment=0x7f09000b;
-        public static final int firstFragment=0x7f090006;
-        public static final int firstFragmentTextView=0x7f09000a;
-        public static final int first_fragment=0x7f090009;
+        public static final int chatButton=0x7f09000b;
+        public static final int chatEditText=0x7f09000c;
+        public static final int chatFragmentBtn=0x7f09000f;
+        public static final int chatText=0x7f09000d;
+        public static final int chat_fragment=0x7f090009;
+        public static final int firstFragmentTextView=0x7f090008;
+        public static final int first_fragment=0x7f090007;
         public static final int incomingCallLayout=0x7f090000;
         public static final int loginButton=0x7f090004;
         public static final int loginLayout=0x7f090003;
-        public static final int map_fragment=0x7f09000f;
-        public static final int pager=0x7f090008;
-        public static final int tabfragment=0x7f090007;
+        public static final int mapFragmentBtn=0x7f09000a;
+        public static final int map_fragment=0x7f09000e;
         public static final int textView1=0x7f090001;
     }
     public static final class layout {
@@ -48,7 +48,8 @@ public final class R {
         public static final int activity_main=0x7f030002;
         public static final int call_list_fragment=0x7f030003;
         public static final int chat_fragment=0x7f030004;
-        public static final int map_fragment=0x7f030005;
+        public static final int login_fragment=0x7f030005;
+        public static final int map_fragment=0x7f030006;
     }
     public static final class menu {
         public static final int main=0x7f080000;

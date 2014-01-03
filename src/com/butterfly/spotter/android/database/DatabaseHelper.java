@@ -44,7 +44,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		db.execSQL("DROP TABLE IF EXISTS " + DbMetadata.CREATE_MESSAGE_TABLE);
+		//db.execSQL("DROP TABLE IF EXISTS " + DbMetadata.CREATE_MESSAGE_TABLE);
 		db.execSQL(DbMetadata.CREATE_MESSAGE_TABLE);
 		
 	}

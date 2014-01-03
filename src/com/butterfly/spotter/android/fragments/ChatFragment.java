@@ -7,6 +7,7 @@ import java.util.concurrent.BlockingQueue;
 import com.butterfly.spotter.android.R;
 import com.butterfly.spotter.android.activities.LoginActivity;
 import com.butterfly.spotter.android.database.DatabaseHelper;
+import com.butterfly.spotter.android.listener.SwitchFragmentListener;
 import com.butterfly.spotter.android.model.Message;
 import com.butterfly.spotter.android.singleton.SingletonAccess;
 import com.butterfly.spotter.android.util.Utility;
@@ -44,14 +45,16 @@ import android.text.method.TextKeyListener;
 */
 
 
-public class ChatFragment extends Fragment implements FragmentHandler, TabInfoInterface  {
+public class ChatFragment extends Fragment implements FragmentHandler {
 
 	private DatabaseHelper databaseHelper;
 	private BlockingQueue<String> queue;
+    private SwitchFragmentListener fragmentListener;
 	private Context context;
 	
-	Button button;
-	EditText myEditText;
+	private Button chatBtn;
+	private Button mapBtn;
+	private EditText myEditText;
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -65,8 +68,67 @@ public class ChatFragment extends Fragment implements FragmentHandler, TabInfoIn
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View view = inflater.inflate(R.layout.chat_fragment, container, false);
-    	button = (Button) view.findViewById(R.id.chatButton);
-    	button.setOnClickListener(new OnClickListener() {
+        handleChatFunctionality(view);
+        toMapEditorToggler(view);
+    	return view;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState)
+    {
+        super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
+    public void onAttach(Activity activity)
+    {
+        super.onAttach(activity);
+        
+        //is it the best place to refer DatabaseHelper????
+        //databaseHelper = DatabaseHelper.getInstance(activity);
+        databaseHelper = SingletonAccess.INSTANCE.getSingleton().getDatabaseHelper();
+        queue = SingletonAccess.INSTANCE.getSingleton().getMessageQueue();
+        try {
+            fragmentListener = (SwitchFragmentListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement SwitchFragmentListener");
+        }
+        renderViewBasedOnEvent();
+    }
+
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+    }
+    
+	public String fragmentName() {
+		return "chat";
+	}
+	
+	public void renderViewBasedOnEvent() {
+		Toast.makeText(this.getActivity(), 
+             "Loading!!! ? " ,  Toast.LENGTH_LONG).show();
+    
+		TextView textView = (TextView) this.getActivity().findViewById(R.id.chatText);
+		//textView.setText(textView.getText().toString() +"\n" + "hello1");
+		List<Message> messageList = databaseHelper.getMessageList();	
+		for (Message message : messageList) {
+			textView.setText(textView.getText().toString() 
+					+"\n" + message.getMessage() + "-" + message.getCreated());
+		}
+	}
+	
+	private void handleChatFunctionality(View view) {
+        chatBtn = (Button) view.findViewById(R.id.chatButton);
+    	chatBtn.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
@@ -97,93 +159,15 @@ public class ChatFragment extends Fragment implements FragmentHandler, TabInfoIn
 				
 			}
 		});
-    	
-    	///this is a bug for tabwidget. will be removed.
-    	OnTouchListener foucsHandler = new OnTouchListener() {
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				  v.requestFocusFromTouch();
-				return false;
-			}
-    	};
-    	view.findViewById(R.id.chatEditText).setOnTouchListener(foucsHandler);
-    	return view;
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState)
-    {
-        super.onActivityCreated(savedInstanceState);
-    }
-
-    @Override
-    public void onAttach(Activity activity)
-    {
-        super.onAttach(activity);
-        
-        //is it the best place to refer DatabaseHelper????
-        //databaseHelper = DatabaseHelper.getInstance(activity);
-        databaseHelper = SingletonAccess.INSTANCE.getSingleton().getDatabaseHelper();
-        queue = SingletonAccess.INSTANCE.getSingleton().getMessageQueue();
-    }
-
-    @Override
-    public void onStart()
-    {
-        super.onStart();
-    }
-
-    @Override
-    public void onResume()
-    {
-        super.onResume();
-    }
-    
-/*    @Override
-    public void onClick(View v) {
-        Toast.makeText(this.getActivity(), 
-                "Chat Button clicked!!!", Toast.LENGTH_LONG).show();
-        final EditText chatMsg = (EditText) this.getActivity().findViewById(R.id.chatEditText);
-        Log.d("chat msg........", chatMsg.toString());
-        String groupId = LoginActivity.loginId + "@" + CallListFragment.currentPeer;
-        AndroidHttpClient httpClient = new AndroidHttpClient(Utility.SERVERPATH);
-        httpClient.setMaxRetries(2);
-        ParameterMap params = httpClient.newParams()
-                .add("groupId", groupId)
-                .add("message", chatMsg.getText().toString())
-                .add("authKey", "HRWSTDKJBEUEDF#UINUIT");
-        httpClient.post("/spotter/message", params, new AsyncCallback() {
-           
-            @Override
-            public void onError(Exception e) {
-                e.printStackTrace();
-            }
-			@Override
-			public void onComplete(HttpResponse httpResponse) {
-		        databaseHelper.addMessage(new Message(CallListFragment.currentPeer, chatMsg.toString()));
-		        TextView chatText = (TextView) ((Activity) context).findViewById(R.id.chatText);
-				chatText.setText(chatText.getText().toString() + "\n" + chatMsg);
-			}
-        });
-	}
-
-*/    
-	public String fragmentName() {
-		return "chat";
 	}
 	
-	public void renderViewBasedOnEvent() {
-		Toast.makeText(this.getActivity(), 
-             "Loading!!! ? " ,  Toast.LENGTH_LONG).show();
-    
-		TextView textView = (TextView) this.getActivity().findViewById(R.id.chatText);
-		//textView.setText(textView.getText().toString() +"\n" + "hello1");
-		List<Message> messageList = databaseHelper.getMessageList();	
-		for (Message message : messageList) {
-			textView.setText(textView.getText().toString() 
-					+"\n" + message.getMessage() + "-" + message.getCreated());
-		}
+	private void toMapEditorToggler(View view) {
+		   mapBtn = (Button) view.findViewById(R.id.mapFragmentBtn);
+	    	mapBtn.setOnClickListener(new OnClickListener() {
+	    		@Override
+				public void onClick(View v) {
+	    			fragmentListener.switchFragment(MapFragment.class);
+	    		}
+	    	});
 	}
-	
-	
 }

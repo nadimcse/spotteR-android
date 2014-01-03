@@ -5,12 +5,12 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 import com.butterfly.spotter.android.R;
-import com.butterfly.spotter.android.adapter.TabsAdapter;
-import com.butterfly.spotter.android.fragments.CallListFragment.OnCallListItemSelectedLisener;
+import com.butterfly.spotter.android.fragments.CallListFragment;
 import com.butterfly.spotter.android.fragments.ChatFragment;
-import com.butterfly.spotter.android.fragments.FragmentHandler;
 import com.butterfly.spotter.android.fragments.GCMLoaderFragment;
+import com.butterfly.spotter.android.fragments.LoginFragment;
 import com.butterfly.spotter.android.fragments.MapFragment;
+import com.butterfly.spotter.android.listener.SwitchFragmentListener;
 import com.butterfly.spotter.android.service.MapHttpService;
 import com.butterfly.spotter.android.service.MessageHttpService;
 import com.butterfly.spotter.android.singleton.Singleton;
@@ -18,14 +18,12 @@ import com.butterfly.spotter.android.singleton.SingletonAccess;
 
 import android.os.Bundle;
 import android.content.Context;
-import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.ViewPager;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.Menu;
-import android.widget.TabHost;
-import android.widget.TabHost.OnTabChangeListener;
 
 /** 
  *
@@ -34,11 +32,8 @@ import android.widget.TabHost.OnTabChangeListener;
  *
 */
 
-public class MainActivity extends FragmentActivity implements OnCallListItemSelectedLisener {
+public class MainActivity extends FragmentActivity implements SwitchFragmentListener {
 
-	private TabHost tabHost;
-    private ViewPager viewPager;
-    private TabsAdapter tabsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -49,11 +44,6 @@ public class MainActivity extends FragmentActivity implements OnCallListItemSele
         //initialize all singleton objects
         createAllSingletons(context);
 
-       if (!LoginActivity.loogedIn) {
-        	  Intent intent = new Intent(context, LoginActivity.class);
-              startActivity(intent);   
-
-        }
 
         //get GCM ID
         //register GCM a HeadLess fragment
@@ -62,27 +52,14 @@ public class MainActivity extends FragmentActivity implements OnCallListItemSele
         //render activities View
         setContentView(R.layout.activity_main);
 
-        
-        //render CallList fragment
-      //  renderCallListFragment();
+        initFragments();
        
-        
-        // renderTabs;
-        renderTabs(context, savedInstanceState);
-        
-        ///will be refactored
+/*        ///will be refactored
         Executor messageEXecutor = Executors.newSingleThreadExecutor();
         messageEXecutor.execute(new MessageHttpService());
         Executor mapEXecutor = Executors.newSingleThreadExecutor();
         mapEXecutor.execute(new MapHttpService());
-   
-      
-       /* for (Fragment ff : getSupportFragmentManager().getFragments()) {
-        		getSupportFragmentManager().beginTransaction()
-        		.hide(ff).commit();
-        }*/
-        
-
+*/
     }
     
     @Override
@@ -104,49 +81,30 @@ public class MainActivity extends FragmentActivity implements OnCallListItemSele
         .commit();
    }
     
-  /*  public void renderCallListFragment() {
-      	 getSupportFragmentManager().beginTransaction()
-         .add(R.id.call_list_fragment)
-         .commit();
-    	
-    }*/
+    private void initFragments() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+	    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+	      fragmentTransaction
+	      .add(R.id.activity_container, new CallListFragment())
+	      .add(R.id.activity_container, new LoginFragment())
+	      .add(R.id.activity_container, new ChatFragment())
+	      .add(R.id.activity_container,  new MapFragment())
+	      .commit();
    
-   
-   private void renderTabs(Context context, Bundle savedInstanceState) {
-	   tabHost = (TabHost)findViewById(android.R.id.tabhost);	 
-       tabHost.setup();
-       
-       viewPager = (ViewPager)findViewById(R.id.pager);
-       tabsAdapter = new TabsAdapter((FragmentActivity) context, tabHost, viewPager);
-
-       tabsAdapter.addTab(tabHost.newTabSpec("chat").setIndicator("Chat"), ChatFragment.class, null);
-       tabsAdapter.addTab(tabHost.newTabSpec("map").setIndicator("Map"), MapFragment.class, null);
-
-       
-       if (savedInstanceState != null)
-       {
-           tabHost.setCurrentTabByTag(savedInstanceState.getString("tab"));
-       }
-   	
-   }
-
-    public void reLoadSelectedTabView() {
-        Log.d("TAb tag...", "" + tabHost.getCurrentTabTag());
-    	
-    	FragmentHandler fragHandler = getFragmentBasedOnCurrentTab();
-    	fragHandler.renderViewBasedOnEvent();
     }
     
-    private FragmentHandler getFragmentBasedOnCurrentTab() {
-    	  for (Fragment frag : getSupportFragmentManager().getFragments()) {
-    		  
-    		  if ((frag instanceof FragmentHandler) &&
-    				  tabHost.getCurrentTabTag().equals(((FragmentHandler) frag).fragmentName())) {
-    			  	return (FragmentHandler) frag;
-    		  }
-          }
-    	  
-    	  //check null???
-    	  return null;
+    public void switchFragment(Class<?> clazz) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+	    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+    	for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+    		if (clazz.equals(fragment.getClass())) {
+    			fragmentTransaction.show(fragment);
+    		} else {
+        		fragmentTransaction.hide(fragment);
+    			
+    		}
+    	}
+    	fragmentTransaction.commit();
     }
 }

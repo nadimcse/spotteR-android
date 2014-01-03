@@ -21,6 +21,12 @@
         android:id="@+id/firstFragmentTextView"
         android:layout_gravity="center_horizontal|top" />
     
+
+    <Button
+        android:id="@+id/mapFragmentBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="map" />
     
     <Button
         android:id="@+id/chatButton"

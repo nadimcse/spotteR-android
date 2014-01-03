@@ -2,6 +2,7 @@ package com.butterfly.spotter.android.fragments;
 
 
 import com.butterfly.spotter.android.R;
+import com.butterfly.spotter.android.listener.SwitchFragmentListener;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -9,6 +10,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 
 /** 
 *
@@ -16,7 +19,10 @@ import android.view.ViewGroup;
 * @since  Dec 2, 2013
 *
 */
-public class MapFragment extends Fragment implements FragmentHandler, TabInfoInterface {
+public class MapFragment extends Fragment implements FragmentHandler {
+    private SwitchFragmentListener fragmentListener;
+    private Button  chatBtn; 
+    
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -26,7 +32,9 @@ public class MapFragment extends Fragment implements FragmentHandler, TabInfoInt
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        return inflater.inflate(R.layout.map_fragment, container, false);
+        View view = inflater.inflate(R.layout.map_fragment, container, false);
+        toChatEditorToggler(view);
+        return view;
     }
 
     @Override
@@ -39,6 +47,13 @@ public class MapFragment extends Fragment implements FragmentHandler, TabInfoInt
     public void onAttach(Activity activity)
     {
         super.onAttach(activity);
+        try {
+            fragmentListener = (SwitchFragmentListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement SwitchFragmentListener");
+        }
+        renderViewBasedOnEvent();
     }
 
     @Override
@@ -61,5 +76,14 @@ public class MapFragment extends Fragment implements FragmentHandler, TabInfoInt
 
 		///apply logic
 	}
-
+	
+	private void toChatEditorToggler(View view) {
+		   chatBtn = (Button) view.findViewById(R.id.chatFragmentBtn);
+		   chatBtn.setOnClickListener(new OnClickListener() {
+	    		@Override
+				public void onClick(View v) {
+	    			fragmentListener.switchFragment(ChatFragment.class);
+	    		}
+	    	});
+	}
 }

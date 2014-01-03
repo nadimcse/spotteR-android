@@ -20,5 +20,11 @@
         android:textStyle="bold"
         android:id="@+id/firstFragmentTextView"
         android:layout_gravity="center_horizontal|top" />
+        <Button
+        android:id="@+id/chatFragmentBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="chat" />
+    
 
 </LinearLayout>
