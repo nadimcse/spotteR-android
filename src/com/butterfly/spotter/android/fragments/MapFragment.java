@@ -33,7 +33,7 @@ public class MapFragment extends Fragment implements FragmentHandler {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View view = inflater.inflate(R.layout.map_fragment, container, false);
-        toChatEditorToggler(view);
+        togglerToChatEditor(view);
         return view;
     }
 
@@ -77,7 +77,7 @@ public class MapFragment extends Fragment implements FragmentHandler {
 		///apply logic
 	}
 	
-	private void toChatEditorToggler(View view) {
+	private void togglerToChatEditor(View view) {
 		   chatBtn = (Button) view.findViewById(R.id.chatFragmentBtn);
 		   chatBtn.setOnClickListener(new OnClickListener() {
 	    		@Override

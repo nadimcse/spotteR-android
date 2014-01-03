@@ -1,8 +1,6 @@
 package com.butterfly.spotter.android.activities;
 
 
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 import com.butterfly.spotter.android.R;
 import com.butterfly.spotter.android.fragments.AppSettingFragment;
@@ -25,7 +23,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;

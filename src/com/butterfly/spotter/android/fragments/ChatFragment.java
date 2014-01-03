@@ -55,6 +55,7 @@ public class ChatFragment extends Fragment implements FragmentHandler {
 	private Button chatBtn;
 	private Button mapBtn;
 	private EditText myEditText;
+	
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -69,7 +70,7 @@ public class ChatFragment extends Fragment implements FragmentHandler {
     {
         View view = inflater.inflate(R.layout.chat_fragment, container, false);
         handleChatFunctionality(view);
-        toMapEditorToggler(view);
+        togglerToMapEditor(view);
     	return view;
     }
 
@@ -160,7 +161,7 @@ public class ChatFragment extends Fragment implements FragmentHandler {
 		});
 	}
 	
-	private void toMapEditorToggler(View view) {
+	private void togglerToMapEditor(View view) {
 		   mapBtn = (Button) view.findViewById(R.id.mapFragmentBtn);
 	    	mapBtn.setOnClickListener(new OnClickListener() {
 	    		@Override
