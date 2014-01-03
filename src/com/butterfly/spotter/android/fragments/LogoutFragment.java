@@ -1,12 +1,12 @@
 package com.butterfly.spotter.android.fragments;
 
-import com.butterfly.spotter.android.R;
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.butterfly.spotter.android.R;
 
 /** 
 *
@@ -14,9 +14,7 @@ import android.view.ViewGroup;
 * @since  Jan 3, 2014
 *
 */
-
-
-public class SearchFragment extends Fragment {
+public class LogoutFragment extends Fragment {
 	   @Override
 	    public void onCreate(Bundle savedInstanceState)
 	    {
@@ -26,7 +24,7 @@ public class SearchFragment extends Fragment {
 	    @Override
 	    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	    {
-	        View view = inflater.inflate(R.layout.search_fragment, container, false);
+	        View view = inflater.inflate(R.layout.logout_fragment, container, false);
 	        return view;
 	    }
 

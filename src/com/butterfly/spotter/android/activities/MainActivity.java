@@ -5,11 +5,16 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 import com.butterfly.spotter.android.R;
+import com.butterfly.spotter.android.fragments.AppSettingFragment;
 import com.butterfly.spotter.android.fragments.CallListFragment;
 import com.butterfly.spotter.android.fragments.ChatFragment;
 import com.butterfly.spotter.android.fragments.GCMLoaderFragment;
+import com.butterfly.spotter.android.fragments.GroupFragment;
 import com.butterfly.spotter.android.fragments.LoginFragment;
+import com.butterfly.spotter.android.fragments.LogoutFragment;
 import com.butterfly.spotter.android.fragments.MapFragment;
+import com.butterfly.spotter.android.fragments.RecentActivityFragment;
+import com.butterfly.spotter.android.fragments.SearchFragment;
 import com.butterfly.spotter.android.listener.SwitchFragmentListener;
 import com.butterfly.spotter.android.service.MapHttpService;
 import com.butterfly.spotter.android.service.MessageHttpService;
@@ -24,6 +29,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 
 /** 
  *
@@ -33,7 +41,8 @@ import android.view.Menu;
 */
 
 public class MainActivity extends FragmentActivity implements SwitchFragmentListener {
-
+	private Button callListBtn;
+	private Button recentActivityBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -53,7 +62,9 @@ public class MainActivity extends FragmentActivity implements SwitchFragmentList
         setContentView(R.layout.activity_main);
 
         initFragments();
-       
+
+        handleCallListFunctionality();
+        handleRecentActivityFunctionality();
 /*        ///will be refactored
         Executor messageEXecutor = Executors.newSingleThreadExecutor();
         messageEXecutor.execute(new MessageHttpService());
@@ -87,9 +98,14 @@ public class MainActivity extends FragmentActivity implements SwitchFragmentList
 
 	      fragmentTransaction
 	      .add(R.id.activity_container, new CallListFragment())
-	      .add(R.id.activity_container, new LoginFragment())
 	      .add(R.id.activity_container, new ChatFragment())
-	      .add(R.id.activity_container,  new MapFragment())
+	      .add(R.id.activity_container, new LoginFragment())
+	      .add(R.id.activity_container, new MapFragment())
+	      .add(R.id.activity_container, new RecentActivityFragment())
+	      .add(R.id.activity_container, new SearchFragment())
+	      .add(R.id.activity_container, new AppSettingFragment())
+	      .add(R.id.activity_container, new GroupFragment())
+	      .add(R.id.activity_container, new LogoutFragment())
 	      .commit();
    
     }
@@ -107,4 +123,25 @@ public class MainActivity extends FragmentActivity implements SwitchFragmentList
     	}
     	fragmentTransaction.commit();
     }
+    
+    private void handleCallListFunctionality() {
+		   callListBtn = (Button) findViewById(R.id.callListBtn);
+		   callListBtn.setOnClickListener(new OnClickListener() {
+	    		@Override
+				public void onClick(View v) {
+	    			switchFragment(CallListFragment.class);
+	    		}
+	    	});
+    }
+    
+    private void handleRecentActivityFunctionality() {
+		   recentActivityBtn = (Button) findViewById(R.id.recentActivityBtn);
+		   recentActivityBtn.setOnClickListener(new OnClickListener() {
+	    		@Override
+				public void onClick(View v) {
+	    			switchFragment(RecentActivityFragment.class);
+	    		}
+	    	});
+    }
+
 }
