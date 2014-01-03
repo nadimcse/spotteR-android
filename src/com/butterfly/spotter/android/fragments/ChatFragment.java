@@ -87,7 +87,6 @@ public class ChatFragment extends Fragment implements FragmentHandler {
         //is it the best place to refer DatabaseHelper????
         //databaseHelper = DatabaseHelper.getInstance(activity);
         databaseHelper = SingletonAccess.INSTANCE.getSingleton().getDatabaseHelper();
-        queue = SingletonAccess.INSTANCE.getSingleton().getMessageQueue();
         try {
             fragmentListener = (SwitchFragmentListener) activity;
         } catch (ClassCastException e) {

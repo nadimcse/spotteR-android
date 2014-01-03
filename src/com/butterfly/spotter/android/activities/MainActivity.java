@@ -16,8 +16,6 @@ import com.butterfly.spotter.android.fragments.MapFragment;
 import com.butterfly.spotter.android.fragments.RecentActivityFragment;
 import com.butterfly.spotter.android.fragments.SearchFragment;
 import com.butterfly.spotter.android.listener.SwitchFragmentListener;
-import com.butterfly.spotter.android.service.MapHttpService;
-import com.butterfly.spotter.android.service.MessageHttpService;
 import com.butterfly.spotter.android.singleton.Singleton;
 import com.butterfly.spotter.android.singleton.SingletonAccess;
 
@@ -65,12 +63,6 @@ public class MainActivity extends FragmentActivity implements SwitchFragmentList
 
         handleCallListFunctionality();
         handleRecentActivityFunctionality();
-/*        ///will be refactored
-        Executor messageEXecutor = Executors.newSingleThreadExecutor();
-        messageEXecutor.execute(new MessageHttpService());
-        Executor mapEXecutor = Executors.newSingleThreadExecutor();
-        mapEXecutor.execute(new MapHttpService());
-*/
     }
     
     @Override
