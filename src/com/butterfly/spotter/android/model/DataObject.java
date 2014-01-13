@@ -1,5 +1,7 @@
 package com.butterfly.spotter.android.model;
 
+import java.util.Map;
+
 /** 
 *
 * @author Nadim
@@ -15,6 +17,8 @@ public class DataObject {
 	private String message;
 	private String xCoordinate;
 	private String yCoordinate;
+	private String authKey;
+	private Map<String, String> urlMap;
 	
 	public String getStatus() {
 		return status;
@@ -51,7 +55,7 @@ public class DataObject {
 	public String getXCoordinate() {
 		return xCoordinate;
 	}
-	
+
 	public void setXCoordinate(String xCoordinate) {
 		this.xCoordinate = xCoordinate;
 	}
@@ -59,8 +63,24 @@ public class DataObject {
 	public String getYCoordinate() {
 		return yCoordinate;
 	}
-	
+
 	public void setYCoordinate(String yCoordinate) {
 		this.yCoordinate = yCoordinate;
+	}
+
+	public String getAuthKey() {
+		return authKey;
+	}
+
+	public void setAuthKey(String authKey) {
+		this.authKey = authKey;
+	}
+
+	public Map<String, String> getUrlMap() {
+		return urlMap;
+	}
+
+	public void setUrlMap(Map<String, String> urlMap) {
+		this.urlMap = urlMap;
 	}
 }

@@ -86,9 +86,9 @@ public class MainActivity extends FragmentActivity implements SwitchFragmentList
 	    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
 	      fragmentTransaction
+	      .add(R.id.activity_container, new LoginFragment())
 	      .add(R.id.activity_container, new CallListFragment())
 	      .add(R.id.activity_container, new ChatFragment())
-	      .add(R.id.activity_container, new LoginFragment())
 	      .add(R.id.activity_container, new MapFragment())
 	      .add(R.id.activity_container, new RecentActivityFragment())
 	      .add(R.id.activity_container, new SearchFragment())

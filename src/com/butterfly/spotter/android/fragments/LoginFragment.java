@@ -1,10 +1,15 @@
 package com.butterfly.spotter.android.fragments;
 
+import org.apache.http.util.EntityUtils;
+
 import com.butterfly.spotter.android.R;
 import com.butterfly.spotter.android.activities.LoginActivity;
 import com.butterfly.spotter.android.activities.MainActivity;
 import com.butterfly.spotter.android.listener.SwitchFragmentListener;
+import com.butterfly.spotter.android.model.DataObject;
+import com.butterfly.spotter.android.model.StatusCode;
 import com.butterfly.spotter.android.util.Utility;
+import com.google.gson.Gson;
 import com.turbomanage.httpclient.AsyncCallback;
 import com.turbomanage.httpclient.HttpResponse;
 import com.turbomanage.httpclient.ParameterMap;
@@ -15,6 +20,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +32,7 @@ public class LoginFragment extends Fragment {
     private SwitchFragmentListener fragmentListener;
 	public static boolean loogedIn = false;
 	public static String loginId;
+	public static String authKey;
 	private Button loginBtn;
 
     @Override
@@ -84,21 +91,24 @@ public class LoginFragment extends Fragment {
                 httpClient.setMaxRetries(2);
                 ParameterMap params = httpClient.newParams()
                         .add("gcmKey", GCMLoaderFragment.gcmKey)
-                        .add("password", "1234")
+                        .add("password", "nadim")
                         .add("callerId", callerId.getText().toString());
                 httpClient.post("/spotter/login", params, new AsyncCallback() {
                    
                     @Override
                     public void onError(Exception e) {
-                    	
                     	//show login validation error
                         e.printStackTrace();
                     }
 					@Override
 					public void onComplete(HttpResponse httpResponse) {
+							DataObject dataObj = new Gson().fromJson(httpResponse.getBodyAsString(), DataObject.class);
 						   ///check authentication
-						   loogedIn = true;
-						   loginId = callerId.getText().toString(); //??? i forget what is this for.
+							if (StatusCode.LOGIN_OK.name().equals(dataObj.getStatus())) {
+								   loogedIn = true;
+								   loginId = callerId.getText().toString();
+								   authKey = dataObj.getAuthKey();
+							}
 						   fragmentListener.switchFragment(CallListFragment.class);
 					}
                 });
